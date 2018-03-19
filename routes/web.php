@@ -16,11 +16,14 @@ Route::get('/error', function () {
 
 Route::get('/solicitudes/show', function () {
         return view('solicitudes');
-})->middleware(['auth', HasAccess::class, CheckRole::class]);
+})->middleware(['auth', HasAccess::class, CheckRole::class])->name('solicitudes');
 
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::get('/solicitudes/aceptarSolicitud', 'SolicitudesController@aceptar');
+Route::get('/solicitudes/rechazarSolicitud', 'SolicitudesController@rechazar');
 
 Route::get('/showNotifications', 'HomeController@cargaNotificaciones');
 

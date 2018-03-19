@@ -1,4 +1,4 @@
-$(document).ready(function(){
+$(document).ready(function () {
     $('#tabla').DataTable({
         "columns": [
             {"width": "20%"},
@@ -9,14 +9,33 @@ $(document).ready(function(){
         ]
     });
 
-    $(".aceptar").click(function(){
+    $(".aceptar").click(function () {
         var renglon = $(this).parent().parent();
         var id = renglon.attr('id');
-
-        //renglon.remove();
+        $.ajax({
+            url: "aceptarSolicitud",
+            method: "GET",
+            data: {
+                id: id
+            },
+            success: function () {
+                location.reload();
+            }
+        });
     });
 
-    $(".rechazar").click(function(){
-        //console.log("rechazar")
+    $(".rechazar").click(function () {
+        var renglon = $(this).parent().parent();
+        var id = renglon.attr('id');
+        $.ajax({
+            url: "rechazarSolicitud",
+            method: "GET",
+            data: {
+                id: id
+            },
+            success: function () {
+                location.reload();
+            }
+        });
     });
 });
