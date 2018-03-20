@@ -19,6 +19,9 @@
     <script src="{{ asset('js/index.js') }}"></script>
 </head>
 <body>
+<?php
+use Illuminate\Support\Facades\Request;
+?>
 <div id="app">
     <nav class="navbar navbar-default navbar-static-top">
         <div class="container">
@@ -43,17 +46,52 @@
                 <!-- Right Side Of Navbar -->
                 <ul class="nav navbar-nav navbar-right">
                     <!-- Authentication Links -->
-                @guest
-                    <!--<li><a href="{{ route('login') }}">Iniciar sesión</a></li>-->
+                    @guest
                         <li><a href="{{ route('register') }}">Regístrate</a></li>
                     @else
                         @if (Auth::user()->hasRole("Administrador"))
-                            <li>
-                                <a id="solicitudes" href="{{ url('solicitudes/show') }}">
-                                    Solicitudes
-                                    <span id='numNot' class='badge'
-                                          style='background-color: #2a88bd; color: whitesmoke'></span>
-                                </a>
+                            <?php
+                            if (Request::is('avisos/*')) {
+                                echo "<li class='active'>";
+                            } else {
+                                echo "<li>";
+                            }
+                            ?>
+                            <a id="avisos" href="{{ url('avisos/show') }}">
+                                <span class='glyphicon glyphicon-comment'></span>
+                                &nbsp;
+                                Avisos
+                            </a>
+                            </li>
+                        @endif
+                        <?php
+                        if (Request::is('codigos/*')) {
+                            echo "<li class='active'>";
+                        } else {
+                            echo "<li>";
+                        }
+                        ?>
+                        <a id="codigos" href="{{ url('codigos/show') }}">
+                            <span class='glyphicon glyphicon-qrcode'></span>
+                            &nbsp;
+                            Códigos
+                        </a>
+                        </li>
+                        @if (Auth::user()->hasRole("Administrador"))
+                            <?php
+                            if (Request::is('solicitudes/show')) {
+                                echo "<li class='active'>";
+                            } else {
+                                echo "<li>";
+                            }
+                            ?>
+                            <a id="solicitudes" href="{{ url('solicitudes/show') }}">
+                                <span class='glyphicon glyphicon-bell'></span>
+                                &nbsp;
+                                Solicitudes
+                                <span id='numNot' class='badge'
+                                      style='background-color: #2a88bd; color: whitesmoke'></span>
+                            </a>
                             </li>
                         @endif
                         <li class="dropdown">

@@ -1,23 +1,33 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <div class="row">
-        <div class="col-md-8 col-md-offset-2">
-            <div class="panel panel-default">
-                <div class="panel-heading">Dashboard</div>
-
-                <div class="panel-body">
-                    @if (session('status'))
-                        <div class="alert alert-success">
-                            {{ session('status') }}
-                        </div>
-                    @endif
-
-                    You are logged in!
-                </div>
-            </div>
-        </div>
+    <div class="container">
+        <?php
+        use App\Aviso;
+        $avisos = Aviso::all()->where('visible', '=', 1);
+        $i = 1;
+        foreach ($avisos as $aviso) {
+            if ($i == 5) $i = 1;
+            switch ($i) {
+                case 1:
+                    $clase = "alert-info";
+                    break;
+                case 2:
+                    $clase = "alert-success";
+                    break;
+                case 3:
+                    $clase = "alert-danger";
+                    break;
+                case 4:
+                    $clase = "alert-warning";
+                    break;
+            }
+            echo "<div class='alert $clase alert-dismissible'>
+                    <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a>
+                    $aviso->texto
+                  </div>";
+            $i++;
+        }
+        ?>
     </div>
-</div>
 @endsection
