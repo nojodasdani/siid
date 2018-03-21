@@ -2,6 +2,11 @@
 
 @section('content')
 <div class="container">
+    <div class='alert alert-warning alert-dismissible'>
+        <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a>
+        No podrás acceder al sistema hasta ser aceptado por el presidente de colonos (o algún administrador).
+    </div>
+    </div>
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">
