@@ -50,7 +50,7 @@
                                           <tr>
                                             <td colspan='5' class='hiddenRow'>
                                                 <div class='accordian-body collapse' id='image$codigo->id'>
-                                                    <img class='img-responsive' src='../$codigo->imagen'>
+                                                    <img class='img-responsive imagenCodigo' src='../$codigo->imagen'>
                                                 </div>
                                             </td>
                                           </tr>";
