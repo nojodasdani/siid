@@ -1,15 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-    <?php
-    use App\User;
-    $users = User::all()->where('visto', '=', '0');
-    foreach ($users as $user) {
-        $user->visto = 1;
-        $user->save();
-    }
-    $users = User::orderBy('created_at', 'DESC')->get()->where('aceptado', '=', '0');
-    ?>
     <div class="container">
         @if (Session::has('message'))
             <div class="alert alert-success">{{ Session::get('message') }}</div>
@@ -27,32 +18,42 @@
                     <div class="panel-body">
                         <div class="table-responsive">
                             <?php
-                            $html = "<table class='table table-bordered table-striped table-hover' id='tabla'>
+                            use App\Codigo;
+                            use App\Tipo_Codigo;
+                            $codigos = Codigo::where('vigente', '=', 1)->get();
+                            $html = "<table class='codes table table-bordered table-condensed table-striped table-hover' id='tabla' style='border-collapse:collapse;'>
                                     <thead>
                                         <tr>
                                             <td>Fecha de creación</td>
                                             <td>Nombre del visitante</td>
                                             <td>Usos restantes</td>
+                                            <td>Tipo</td>
                                             <td></td>
                                         </tr>
                                     </thead><tbody>";
-                            foreach ($users as $user) {
-                                $numero = "#" . $user->numero->numero;
-                                $calle = $user->numero->calle->calle;
-                                $html .= "<tr id='$user->id'>
-                            <td>$user->name</td>
-                            <td>$user->email</td>
-                            <td>$calle $numero</td>
-                            <td>$user->telefono</td>
-                            <td align='center'>
-                                <button class='btn btn-success aceptar'>
-                                    <span class='glyphicon glyphicon-ok'></span>
-                                </button>
-                                <button class='btn btn-danger rechazar'>
-                                    <span class='glyphicon glyphicon-remove'></span>
-                                </button>
-                            </td>
-                          </tr>";
+                            foreach ($codigos as $codigo) {
+                                $tipo = Tipo_Codigo::find($codigo->id_tipo_codigo)->nombre;
+                                $html .= "<tr id='$codigo->id' data-toggle='collapse' data-target='#image$codigo->id' class='accordion-toggle'>
+                                            <td>$codigo->created_at</td>
+                                            <td>$codigo->nombre_visitante</td>
+                                            <td>$codigo->usos_restantes</td>
+                                            <td>$tipo</td>
+                                            <td align='center'>
+                                                <button class='btn btn-info ver'>
+                                                    <span class='glyphicon glyphicon-eye-open'></span>
+                                                </button>
+                                                <button class='btn btn-danger eliminar'>
+                                                    <span class='glyphicon glyphicon-remove'></span>
+                                                </button>
+                                            </td>
+                                          </tr>
+                                          <tr>
+                                            <td colspan='5' class='hiddenRow'>
+                                                <div class='accordian-body collapse' id='image$codigo->id'>
+                                                    <img class='img-responsive' src='../$codigo->imagen'>
+                                                </div>
+                                            </td>
+                                          </tr>";
                             }
                             $html .= "</tbody></table>";
                             echo $html;
@@ -63,7 +64,7 @@
             </div>
         </div>
         <div class="text-center">
-            <button class='btn btn-info' data-toggle='modal' data-target='#modalUnico'>
+            <button class='btn btn-primary' data-toggle='modal' data-target='#modalUnico'>
                 Invitado
             </button>
             <button class='btn btn-warning' data-toggle='modal' data-target='#modalEvento'>
@@ -102,51 +103,54 @@
                                            placeholder="(Opcional) Apellido Materno de tu visitante">
                                 </div>
                             </div>
-                        </form>
-                        <label style="color: red">Por tu seguridad y la de todos los colonos, favor de introducir datos reales</label>
+                            <label style="color: red">Por tu seguridad y la de todos los colonos, favor de introducir
+                                datos reales</label>
                     </div>
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-success">Generar</button>
+                        </form>
                         <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
                     </div>
                 </div>
             </div>
         </div>
 
-            <!-- Modal -->
-            <div class="modal fade" id="modalEvento" role="dialog">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                            <h4 class="modal-title">Generación de código para un evento</h4>
-                        </div>
-                        <div class="modal-body">
-                            <form class="form-horizontal" method="POST" action="{{ route('crearCodigoEvento') }}">
-                                {{ csrf_field() }}
-                                <div class="form-group">
-                                    <label for="invitados" class="col-md-4 control-label">Invitados</label>
-                                    <div class="col-md-7">
-                                        <input type="number" id="invitados" class="form-control" name="invitados"
-                                               placeholder="Número de invitados esperados" required>
-                                    </div>
+        <!-- Modal -->
+        <div class="modal fade" id="modalEvento" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Generación de código para un evento</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form class="form-horizontal" method="POST" action="{{ route('crearCodigoEvento') }}">
+                            {{ csrf_field() }}
+                            <div class="form-group">
+                                <label for="invitados" class="col-md-4 control-label">Invitados</label>
+                                <div class="col-md-7">
+                                    <input type="number" id="invitados" class="form-control" name="invitados"
+                                           placeholder="Número de invitados esperados" required>
                                 </div>
-                                <div class="form-group">
-                                    <label for="descripcion" class="col-md-4 control-label">Descripción</label>
-                                    <div class="col-md-7">
-                                        <textarea rows="2" id="descripcion" class="form-control" name="descripción" placeholder="Breve descripción del evento" required></textarea>
-                                    </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="descripcion" class="col-md-4 control-label">Descripción</label>
+                                <div class="col-md-7">
+                                    <textarea rows="2" id="descripcion" class="form-control" name="descripcion"
+                                              placeholder="Breve descripción del evento" required></textarea>
                                 </div>
-                            </form>
-                            <label style="color: red">Por tu seguridad y la de todos los colonos, favor de introducir datos reales</label>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="submit" class="btn btn-success">Generar</button>
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-                        </div>
+                            </div>
+                            <label style="color: red">Por tu seguridad y la de todos los colonos, favor de introducir
+                                datos reales</label>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success">Generar</button>
+                        </form>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
                     </div>
                 </div>
             </div>
+        </div>
     </div>
     {{ Html::script('js/codigos.js') }}
 @endsection

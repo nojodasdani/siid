@@ -15,7 +15,7 @@ class CreateAvisosTable extends Migration
     {
         Schema::create('aviso', function (Blueprint $table) {
             $table->increments('id');
-            $table->text('texto')->unique();
+            $table->string('texto', 255)->unique();
             $table->boolean('visible')->default(1);
             $table->integer('creado_por')->unsigned();
             $table->timestamps();

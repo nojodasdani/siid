@@ -45,5 +45,5 @@ Route::post('/avisos/registrar', 'AvisosController@crear')->name('crearAviso');
 Route::get('/avisos/visible', 'AvisosController@visible');
 Route::get('/avisos/eliminar', 'AvisosController@eliminar');
 
-Route::post('/codigos/show/crearUnico', 'CodigosController@crearUnico')->name('crearCodigoUnico');
-Route::post('/codigos/show/crearEvento', 'CodigosController@crearEvento')->name('crearCodigoEvento');
+Route::post('/codigos/show/crearUnico', 'CodigoController@crearUnico')->name('crearCodigoUnico');
+Route::post('/codigos/show/crearEvento', 'CodigoController@crearEvento')->name('crearCodigoEvento');

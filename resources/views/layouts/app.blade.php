@@ -17,6 +17,7 @@
     <script src="{{ asset('js/app.js') }}"></script>
     <script src="{{ asset('js/datatables.min.js') }}"></script>
     <script src="{{ asset('js/index.js') }}"></script>
+    <link href="{{ asset('css/style.css') }}" rel="stylesheet">
 </head>
 <body>
 <?php

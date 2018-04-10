@@ -1,0 +1,10 @@
+.codes tr {
+    cursor: pointer;
+}
+
+.hiddenRow {
+    text-align: center !important;
+    padding: 0 4px !important;
+    background-color: #eeeeee;
+    font-size: 13px;
+}

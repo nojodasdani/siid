@@ -178,7 +178,8 @@ return [
         App\Providers\RouteServiceProvider::class,
         Collective\Html\HtmlServiceProvider::class,
         Laraveles\Spanish\SpanishServiceProvider::class,
-        LaravelQRCode\Providers\QRCodeServiceProvider::class,
+        //LaravelQRCode\Providers\QRCodeServiceProvider::class,
+        SimpleSoftwareIO\QrCode\QrCodeServiceProvider::class
     ],
 
     /*
@@ -229,7 +230,9 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'Form' => Collective\Html\FormFacade::class,
         'Html' => Collective\Html\HtmlFacade::class,
-        'QRCode' => LaravelQRCode\Facades\QRCode::class,
+        //'QRCode' => LaravelQRCode\Facades\QRCode::class,
+        'QrCode' => SimpleSoftwareIO\QrCode\Facades\QrCode::class
+        //QrCode' => SimpleSoftwareIO\QrCode\Facades\QrCode::class
     ],
 
 ];

@@ -1,7 +1,7 @@
 $(document).ready(function () {
     setInterval(function () {
         $.ajax({
-            url: "/siid/public/showNotifications",
+            url: "../showNotifications",
             method: "GET",
             success: function (data) {
                 if(data=="quitar"){
