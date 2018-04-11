@@ -20,7 +20,10 @@
                             <?php
                             use App\Codigo;
                             use App\Tipo_Codigo;
-                            $codigos = Codigo::where('vigente', '=', 1)->get();
+                            use Illuminate\Support\Facades\Auth;
+                            $codigos = Codigo::where('id_usuario', '=', Auth::user()->id)
+                                ->where('vigente', '=', 1)
+                                ->get();
                             $html = "<table class='codes table table-bordered table-condensed table-striped table-hover' id='tabla' style='border-collapse:collapse;'>
                                     <thead>
                                         <tr>
@@ -33,17 +36,17 @@
                                     </thead><tbody>";
                             foreach ($codigos as $codigo) {
                                 $tipo = Tipo_Codigo::find($codigo->id_tipo_codigo)->nombre;
-                                $html .= "<tr id='$codigo->id' data-toggle='collapse' data-target='#image$codigo->id' class='accordion-toggle'>
+                                $html .= "<tr id='$codigo->id'>
                                             <td>$codigo->created_at</td>
                                             <td>$codigo->nombre_visitante</td>
                                             <td>$codigo->usos_restantes</td>
                                             <td>$tipo</td>
                                             <td align='center'>
-                                                <button class='btn btn-info ver'>
+                                                <button class='accordion-toggle btn btn-info ver' data-toggle='collapse' data-target='#image$codigo->id'>
                                                     <span class='glyphicon glyphicon-eye-open'></span>
                                                 </button>
                                                 <button class='btn btn-danger eliminar'>
-                                                    <span class='glyphicon glyphicon-remove'></span>
+                                                    <span class='glyphicon glyphicon-trash'></span>
                                                 </button>
                                             </td>
                                           </tr>

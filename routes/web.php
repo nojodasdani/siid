@@ -1,49 +1,67 @@
 <?php
+
 use App\Http\Middleware\HasAccess;
 use App\Http\Middleware\CheckRole;
+
+$admin = ['auth', HasAccess::class, CheckRole::class];
+$normal = ['auth', HasAccess::class];
 
 Route::get('/', function () {
     return view('welcome');
 });
 
 Route::get('/error', function () {
-    if(Auth::user()->acceso_sistema && Auth::user()->activo) {
+    if (Auth::user()->acceso_sistema && Auth::user()->activo) {
         return redirect('');
-    }else{
+    } else {
         return view('error');
     }
 })->name('error')->middleware('auth');
 
 Route::get('/solicitudes/show', function () {
-        return view('solicitudes');
-})->middleware(['auth', HasAccess::class, CheckRole::class])->name('solicitudes');
+    return view('solicitudes');
+})->name('solicitudes')->middleware($admin);
 
 Route::get('/avisos/show', function () {
     return view('avisos');
-})->middleware(['auth', HasAccess::class, CheckRole::class])->name('avisos');
+})->name('avisos')->middleware($admin);
 
 Route::get('/avisos/registrar', function () {
     return view('registrarAviso');
-})->middleware(['auth', HasAccess::class, CheckRole::class]);
+})->middleware($admin);
 
 Route::get('/codigos/show', function () {
     return view('codigos');
-})->middleware(['auth', HasAccess::class])->name('codigos');
+})->name('codigos')->middleware($normal);
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/home', function () {
+    return view('home');
+})->name('home')->middleware($normal);
 
-Route::get('/solicitudes/aceptarSolicitud', 'SolicitudesController@aceptar');
-Route::get('/solicitudes/rechazarSolicitud', 'SolicitudesController@rechazar');
+Route::get('/micuenta', function () {
+    return view('micuenta');
+})->middleware($normal)->name('micuenta');
+Route::post('/micuenta/modificar', 'HomeController@modificarCuenta')->name('modify')->middleware($normal);
 
-Route::get('/showNotifications', 'HomeController@cargaNotificaciones');
+Route::get('/changepassword', function () {
+    return view('changepass');
+})->middleware($normal);
+Route::post('/changepassword/modificar', 'HomeController@cambiarPass')->name('changePassword')->middleware($normal);
 
-Route::get('/register/showNumbers', 'Auth\RegisterController@cargaNumero');
+Route::get('/solicitudes/aceptarSolicitud', 'SolicitudesController@aceptar')->middleware(['auth', HasAccess::class, CheckRole::class]);
+Route::get('/solicitudes/rechazarSolicitud', 'SolicitudesController@rechazar')->middleware(['auth', HasAccess::class, CheckRole::class]);
 
-Route::post('/avisos/registrar', 'AvisosController@crear')->name('crearAviso');
-Route::get('/avisos/visible', 'AvisosController@visible');
-Route::get('/avisos/eliminar', 'AvisosController@eliminar');
+Route::get('/showNotifications', 'HomeController@cargaNotificaciones')->middleware(['auth', HasAccess::class, CheckRole::class]);
 
-Route::post('/codigos/show/crearUnico', 'CodigoController@crearUnico')->name('crearCodigoUnico');
-Route::post('/codigos/show/crearEvento', 'CodigoController@crearEvento')->name('crearCodigoEvento');
+Route::get('/register/showNumbers', 'Auth\RegisterController@cargaNumero')->middleware(['auth', HasAccess::class, CheckRole::class]);
+
+Route::post('/avisos/registrar', 'AvisosController@crear')->name('crearAviso')->middleware(['auth', HasAccess::class, CheckRole::class]);
+Route::get('/avisos/visible', 'AvisosController@visible')->middleware(['auth', HasAccess::class, CheckRole::class]);
+Route::get('/avisos/eliminar', 'AvisosController@eliminar')->middleware(['auth', HasAccess::class, CheckRole::class]);
+
+Route::post('/codigos/show/crearUnico', 'CodigoController@crearUnico')->name('crearCodigoUnico')->middleware(['auth', HasAccess::class]);
+Route::post('/codigos/show/crearEvento', 'CodigoController@crearEvento')->name('crearCodigoEvento')->middleware(['auth', HasAccess::class]);
+Route::get('/codigos/eliminar', 'CodigoController@eliminar')->middleware(['auth', HasAccess::class]);
+

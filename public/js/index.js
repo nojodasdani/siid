@@ -1,16 +1,19 @@
 $(document).ready(function () {
-    setInterval(function () {
-        $.ajax({
-            url: "../showNotifications",
-            method: "GET",
-            success: function (data) {
-                if(data=="quitar"){
-                    $("#numNot").hide();
-                }else{
-                    $("#numNot").show();
-                    $("#numNot").html(data);
+    if (flag) {
+        var url = (location.href.includes('home') || location.href.includes('micuenta')) ? "showNotifications" : "../showNotifications";
+        setInterval(function () {
+            $.ajax({
+                url: url,
+                method: "GET",
+                success: function (data) {
+                    if (data == "quitar") {
+                        $("#numNot").hide();
+                    } else {
+                        $("#numNot").html(data);
+                        $("#numNot").show();
+                    }
                 }
-            }
-        });
-    }, 1000)
+            });
+        }, 1000)
+    }
 });

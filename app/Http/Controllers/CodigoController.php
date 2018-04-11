@@ -79,5 +79,12 @@ class CodigoController extends Controller
         return $randomString;
     }
 
-
+    public function eliminar(Request $request)
+    {
+        $codigo = Codigo::find($request->input('id'));
+        $codigo->vigente = 0;
+        $codigo->save();
+        Session::flash('message', 'El código fue eliminado exitosamente');
+        //return redirect('/codigos/show');
+    }
 }

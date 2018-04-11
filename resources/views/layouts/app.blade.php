@@ -14,14 +14,16 @@
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('css/datatables.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/iziToast.min.css') }}" rel="stylesheet">
     <script src="{{ asset('js/app.js') }}"></script>
     <script src="{{ asset('js/datatables.min.js') }}"></script>
-    <script src="{{ asset('js/index.js') }}"></script>
+    <script src="{{ asset('js/iziToast.min.js') }}"></script>
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
 </head>
 <body>
 <?php
 use Illuminate\Support\Facades\Request;
+$flag = false;
 ?>
 <div id="app">
     <nav class="navbar navbar-default navbar-static-top">
@@ -50,6 +52,11 @@ use Illuminate\Support\Facades\Request;
                     @guest
                         <li><a href="{{ route('register') }}">Regístrate</a></li>
                     @else
+                        <?php
+                        if (Auth::user()->hasRole("Administrador")) {
+                            $flag = true;
+                        }
+                        ?>
                         @if (Auth::user()->hasRole("Administrador"))
                             <?php
                             if (Request::is('avisos/*')) {
@@ -88,14 +95,20 @@ use Illuminate\Support\Facades\Request;
                             ?>
                             <a id="solicitudes" href="{{ url('solicitudes/show') }}">
                                 <span class='glyphicon glyphicon-bell'></span>
-                                &nbsp;
+                                &nbsp
                                 Solicitudes
                                 <span id='numNot' class='badge'
                                       style='background-color: #2a88bd; color: whitesmoke'></span>
                             </a>
                             </li>
                         @endif
-                        <li class="dropdown">
+                        <?php
+                        $clase = "";
+                        if (Request::is('micuenta') || Request::is('changepassword')) {
+                            $clase = " active";
+                        }
+                        ?>
+                        <li class="dropdown{{$clase}}">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
                                aria-expanded="false" aria-haspopup="true">
                                 {{ Auth::user()->name }} <span class="caret"></span>
@@ -105,6 +118,11 @@ use Illuminate\Support\Facades\Request;
                                 <li>
                                     <a href="{{ url('micuenta') }}">
                                         Mi cuenta
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{ url('changepassword') }}">
+                                        Cambiar contraseña
                                     </a>
                                 </li>
                                 <li>
@@ -126,7 +144,10 @@ use Illuminate\Support\Facades\Request;
             </div>
         </div>
     </nav>
-
+    <script>
+        var flag = "<?php echo $flag ?>";
+    </script>
+    <script src="{{ asset('js/index.js') }}"></script>
     @yield('content')
 </div>
 </body>
