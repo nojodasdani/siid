@@ -40,8 +40,6 @@ class CreateTableCodigo extends Migration
      */
     public function down()
     {
-        Schema::table('codigo', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('codigo');
     }
 }

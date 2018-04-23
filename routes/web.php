@@ -55,7 +55,7 @@ Route::get('/solicitudes/rechazarSolicitud', 'SolicitudesController@rechazar')->
 
 Route::get('/showNotifications', 'HomeController@cargaNotificaciones')->middleware(['auth', HasAccess::class, CheckRole::class]);
 
-Route::get('/register/showNumbers', 'Auth\RegisterController@cargaNumero')->middleware(['auth', HasAccess::class, CheckRole::class]);
+Route::get('/register/showNumbers', 'Auth\RegisterController@cargaNumero');//->middleware(['auth', HasAccess::class, CheckRole::class]);
 
 Route::post('/avisos/registrar', 'AvisosController@crear')->name('crearAviso')->middleware(['auth', HasAccess::class, CheckRole::class]);
 Route::get('/avisos/visible', 'AvisosController@visible')->middleware(['auth', HasAccess::class, CheckRole::class]);
