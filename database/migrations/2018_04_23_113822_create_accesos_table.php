@@ -15,6 +15,7 @@ class CreateAccesosTable extends Migration
     {
         Schema::create('accesos', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('id_visitante')->nullable()->unsigned();
             $table->timestamps();
         });
     }

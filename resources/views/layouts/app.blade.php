@@ -63,6 +63,21 @@ $flag = false;
                             <a id="colonos" href="{{ url('colonos/show') }}">
                                 <span class='glyphicon glyphicon-home'></span>
                                 &nbsp
+                                Accesos
+                            </a>
+                            </li>
+                        @endif
+                        @if (Auth::user()->hasRole("Administrador"))
+                            <?php
+                            if (Request::is('colonos/show')) {
+                                echo "<li class='active'>";
+                            } else {
+                                echo "<li>";
+                            }
+                            ?>
+                            <a id="colonos" href="{{ url('colonos/show') }}">
+                                <span class='glyphicon glyphicon-home'></span>
+                                &nbsp
                                 Colonos
                             </a>
                             </li>
