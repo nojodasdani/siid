@@ -17,7 +17,7 @@
         Lo sentimos
     </div>
     <div class="subheader primary-text-color">
-        {{Session::get('message')}}
+        {{Session::get('redireccionar')}}
     </div>
     <hr>
     <div class="clearfix"></div>
@@ -28,7 +28,9 @@
         </p>
     </div>
     <div class="buttons-container">
-        <a class="border-button" href="http://opion-tech.com" target="_blank">Reporta tu problema</a>
+        @if (Session::get('redireccionar') != "No tienes permiso para acceder al sistema.")
+            <a class="border-button" href="{{ URL::previous() }}">Regresar</a>
+        @endif
         <a class='border-button' href="{{ route('logout') }}"
            onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">

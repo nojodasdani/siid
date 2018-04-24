@@ -8,15 +8,7 @@ $normal = ['auth', HasAccess::class];
 
 Route::get('/', function () {
     return view('welcome');
-});
-
-Route::get('/error', function () {
-    if (Auth::user()->acceso_sistema && Auth::user()->activo) {
-        return redirect('');
-    } else {
-        return view('error');
-    }
-})->name('error')->middleware('auth');
+})->name('inicio');
 
 Route::get('/solicitudes/show', function () {
     return view('solicitudes');
@@ -50,18 +42,24 @@ Route::get('/changepassword', function () {
 })->middleware($normal);
 Route::post('/changepassword/modificar', 'HomeController@cambiarPass')->name('changePassword')->middleware($normal);
 
-Route::get('/solicitudes/aceptarSolicitud', 'SolicitudesController@aceptar')->middleware(['auth', HasAccess::class, CheckRole::class]);
-Route::get('/solicitudes/rechazarSolicitud', 'SolicitudesController@rechazar')->middleware(['auth', HasAccess::class, CheckRole::class]);
+Route::get('/solicitudes/aceptarSolicitud', 'SolicitudesController@aceptar')->middleware($admin);
+Route::get('/solicitudes/rechazarSolicitud', 'SolicitudesController@rechazar')->middleware($admin);
 
-Route::get('/showNotifications', 'HomeController@cargaNotificaciones')->middleware(['auth', HasAccess::class, CheckRole::class]);
+Route::get('/showNotifications', 'HomeController@cargaNotificaciones')->middleware($admin);
 
 Route::get('/register/showNumbers', 'Auth\RegisterController@cargaNumero');//->middleware(['auth', HasAccess::class, CheckRole::class]);
 
-Route::post('/avisos/registrar', 'AvisosController@crear')->name('crearAviso')->middleware(['auth', HasAccess::class, CheckRole::class]);
-Route::get('/avisos/visible', 'AvisosController@visible')->middleware(['auth', HasAccess::class, CheckRole::class]);
-Route::get('/avisos/eliminar', 'AvisosController@eliminar')->middleware(['auth', HasAccess::class, CheckRole::class]);
+Route::post('/avisos/registrar', 'AvisosController@crear')->name('crearAviso')->middleware($admin);
+Route::get('/avisos/visible', 'AvisosController@visible')->middleware($admin);
+Route::get('/avisos/eliminar', 'AvisosController@eliminar')->middleware($admin);
 
-Route::post('/codigos/show/crearUnico', 'CodigoController@crearUnico')->name('crearCodigoUnico')->middleware(['auth', HasAccess::class]);
-Route::post('/codigos/show/crearEvento', 'CodigoController@crearEvento')->name('crearCodigoEvento')->middleware(['auth', HasAccess::class]);
-Route::get('/codigos/eliminar', 'CodigoController@eliminar')->middleware(['auth', HasAccess::class]);
+Route::post('/codigos/show/crearUnico', 'CodigoController@crearUnico')->name('crearCodigoUnico')->middleware($normal);
+Route::post('/codigos/show/crearEvento', 'CodigoController@crearEvento')->name('crearCodigoEvento')->middleware($normal);
+Route::get('/codigos/eliminar', 'CodigoController@eliminar')->middleware($normal);
+
+//atrapar todas las rutas que no existan
+Route::any('/{any}', function () {
+    Session::flash('redireccionar', 'Parece que la página que ingresaste no existe.');
+    return view('error');
+})->where('any', '.*');
 

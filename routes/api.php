@@ -13,6 +13,6 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+Route::post('/guardarCoche', "ApiController@guardarCoche");
+
+Route::get('/cargarCoche/{placa}', "ApiController@cargarCoche");

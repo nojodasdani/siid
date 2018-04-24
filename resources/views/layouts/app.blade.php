@@ -52,6 +52,36 @@ $flag = false;
                     @guest
                         <li><a href="{{ route('register') }}">Regístrate</a></li>
                     @else
+                        @if (Auth::user()->hasRole("Administrador"))
+                            <?php
+                            if (Request::is('colonos/show')) {
+                                echo "<li class='active'>";
+                            } else {
+                                echo "<li>";
+                            }
+                            ?>
+                            <a id="colonos" href="{{ url('colonos/show') }}">
+                                <span class='glyphicon glyphicon-home'></span>
+                                &nbsp
+                                Colonos
+                            </a>
+                            </li>
+                        @endif
+                        @if (Auth::user()->hasRole("Administrador"))
+                            <?php
+                            if (Request::is('visitantes/show')) {
+                                echo "<li class='active'>";
+                            } else {
+                                echo "<li>";
+                            }
+                            ?>
+                            <a id="colonos" href="{{ url('visitantes/show') }}">
+                                <span class='glyphicon glyphicon-user'></span>
+                                &nbsp
+                                Visitantes
+                            </a>
+                            </li>
+                        @endif
                         <?php
                         if (Auth::user()->hasRole("Administrador")) {
                             $flag = true;
