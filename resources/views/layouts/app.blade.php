@@ -54,14 +54,14 @@ $flag = false;
                     @else
                         @if (Auth::user()->hasRole("Administrador"))
                             <?php
-                            if (Request::is('colonos/show')) {
+                            if (Request::is('accesos/show')) {
                                 echo "<li class='active'>";
                             } else {
                                 echo "<li>";
                             }
                             ?>
-                            <a id="colonos" href="{{ url('colonos/show') }}">
-                                <span class='glyphicon glyphicon-home'></span>
+                            <a id="colonos" href="{{ url('accesos/show') }}">
+                                <span class='glyphicon glyphicon-road'></span>
                                 &nbsp
                                 Accesos
                             </a>

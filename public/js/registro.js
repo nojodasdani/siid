@@ -1,6 +1,6 @@
 $(document).ready(function () {
     $("#calle").change(function () {
-        if($(this).val()!="") {
+        if ($(this).val() != "") {
             var id = $(this).val();
             $.ajax({
                 url: "register/showNumbers",
@@ -12,8 +12,17 @@ $(document).ready(function () {
                     $("#num").html(data);
                 }
             });
-        }else {
+        } else {
             $("#num").html("<option value=''>Selecciona...</option>");
         }
     });
+
+    $("#visitas").change(function () {
+        var valor = $(this).prop('checked');
+        if (valor) {
+            $(this).val(1);
+        } else {
+            $(this).val(0);
+        }
+    })
 });

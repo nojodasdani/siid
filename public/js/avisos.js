@@ -35,4 +35,18 @@ $(document).ready(function () {
             }
         });
     });
+
+    $(".nombre").on('change keyup paste', function () {
+        var valor = $(this).val();
+        var renglon = $(this).parent().parent();
+        var id = renglon.attr('id');
+        $.ajax({
+            url: "editar",
+            method: "GET",
+            data: {
+                id: id,
+                valor: valor
+            }
+        });
+    });
 });

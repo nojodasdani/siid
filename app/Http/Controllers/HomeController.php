@@ -25,6 +25,8 @@ class HomeController extends Controller
         $user = User::find(Auth::user()->id);
         $user->name = $request->input('name');
         $user->telefono = $request->input('telefono');
+        $user->id_numero = $request->input('num');
+        $user->acepta_visitas = ($request->input('visitas') != NULL) ? 1 : 0;
         $user->save();
         Session::flash('message', 'Tu cuenta fue modificada exitosamente');
         return redirect('/micuenta');

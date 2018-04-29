@@ -54,9 +54,6 @@
                                             <td colspan='5' class='hiddenRow'>
                                                 <div class='accordian-body collapse' id='image$codigo->id'>
                                                     <img class='img-responsive imagenCodigo' src='../$codigo->imagen'>
-                                                    <div class='text-center' style='padding: 10px;'>
-                                                    <a href='" . url("codigos/guardarImagen/$codigo->id") . "' class='btn btn-success guardarImg'>Guardar</a>
-                                                    </div>
                                                 </div>
                                             </td>
                                           </tr>";

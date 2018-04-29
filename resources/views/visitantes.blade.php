@@ -1,10 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-    <?php
-    use App\Aviso;
-    $avisos = Aviso::all();
-    ?>
     <div class="container">
         @if (Session::has('message'))
             <div class="alert alert-success">{{ Session::get('message') }}</div>
@@ -19,6 +15,8 @@
                     <div class="panel-body">
                         <div class="table-responsive">
                             <?php
+                            use App\Visitante;
+                            $visitantes = Visitante::all();
                             $html = "<table class='table table-bordered table-striped table-hover' id='tabla'>
                                     <thead>
                                         <tr>
@@ -27,16 +25,19 @@
                                             <td></td>
                                         </tr>
                                     </thead><tbody>";
-                            foreach ($avisos as $aviso) {
+                            foreach ($visitantes as $visitante) {
                                 $creado = $aviso->usuario->nombre;
                                 $checked = "";
                                 if ($aviso->visible) {
                                     $checked = " checked";
                                 }
                                 $html .= "<tr id='$aviso->id'>
-                            <td><textarea class='form-control nombre' rows='3'>$aviso->texto</textarea></td>
+                            <td>$aviso->texto</td>
                             <td align='center'><input class='form-control cambiar' type='checkbox'$checked></td>
                             <td align='center'>
+                                <button class='btn btn-info editar'>
+                                    <span class='glyphicon glyphicon-edit'></span>
+                                </button>
                                 <button class='btn btn-danger eliminar'>
                                     <span class='glyphicon glyphicon-trash'></span>
                                 </button>
@@ -51,11 +52,6 @@
                 </div>
             </div>
         </div>
-        <div class="text-center">
-            <a href="{{ url('avisos/registrar') }}" class="btn btn-primary">
-                Crear un aviso
-            </a>
-        </div>
     </div>
-    {{ Html::script('js/avisos.js') }}
+    {{ Html::script('js/visitantes.js') }}
 @endsection

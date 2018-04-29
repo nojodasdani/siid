@@ -5,7 +5,7 @@
             <div class="alert alert-success">{{ Session::get('message') }}</div>
         @endif
         <div class="row">
-            <div class="col-md-8 col-md-offset-2">
+            <div class="col-md-12">
                 <div class="panel panel-default">
                     <div class="panel-heading">Cambio de contraseña</div>
                     <div class="panel-body">

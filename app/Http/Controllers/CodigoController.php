@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Response;
 
 class CodigoController extends Controller
 {
@@ -86,5 +87,15 @@ class CodigoController extends Controller
         $codigo->save();
         Session::flash('message', 'El código fue eliminado exitosamente');
         //return redirect('/codigos/show');
+    }
+
+    public function guardarImagen($id)
+    {
+        $codigo = Codigo::find($id);
+        $filepath = public_path("$codigo->imagen");
+        $headers = array(
+            'Content-Type' => 'image/png'
+        );
+        return Response::download($filepath, $codigo->nombre_visitante . ".png", $headers);
     }
 }
