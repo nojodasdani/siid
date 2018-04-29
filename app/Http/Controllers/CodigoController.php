@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Illuminate\Support\Facades\Session;
-use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Response;
 
 class CodigoController extends Controller
 {
