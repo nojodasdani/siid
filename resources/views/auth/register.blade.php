@@ -16,7 +16,8 @@
                                 <label for="name" class="col-md-4 control-label">Nombre</label>
                                 <div class="col-md-6">
                                     <input id="name" type="text" class="form-control" name="name"
-                                           value="{{ old('name') }}" required autofocus placeholder="Tu nombre completo">
+                                           value="{{ old('name') }}" required autofocus
+                                           placeholder="Tu nombre completo">
                                     @if ($errors->has('name'))
                                         <span class="help-block">
                                         <strong>{{ $errors->first('name') }}</strong>
@@ -28,7 +29,7 @@
                                 <label for="email" class="col-md-4 control-label">Correo electrónico</label>
                                 <div class="col-md-6">
                                     <input id="email" type="email" class="form-control" name="email"
-                                           value="{{ old('email') }}" required>
+                                           value="{{ old('email') }}" required placeholder="Tu correo electrónico">
                                     @if ($errors->has('email'))
                                         <span class="help-block">
                                         <strong>{{ $errors->first('email') }}</strong>
@@ -40,7 +41,7 @@
                                 <label for="telefono" class="col-md-4 control-label">Teléfono de contacto</label>
                                 <div class="col-md-6">
                                     <input id="telefono" type="tel" class="form-control" name="telefono"
-                                           value="{{ old('telefono') }}" required>
+                                           value="{{ old('telefono') }}" required placeholder="Tu teléfono principal">
                                     @if ($errors->has('telefono'))
                                         <span class="help-block">
                                         <strong>{{ $errors->first('telefono') }}</strong>
@@ -74,7 +75,8 @@
                             <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
                                 <label for="password" class="col-md-4 control-label">Contraseña</label>
                                 <div class="col-md-6">
-                                    <input id="password" type="password" class="form-control" name="password" required>
+                                    <input id="password" type="password" class="form-control" name="password" required
+                                           placeholder="Elige una contraseña">
                                     @if ($errors->has('password'))
                                         <span class="help-block">
                                         <strong>{{ $errors->first('password') }}</strong>
@@ -88,7 +90,7 @@
 
                                 <div class="col-md-6">
                                     <input id="password-confirm" type="password" class="form-control"
-                                           name="password_confirmation" required>
+                                           name="password_confirmation" required placeholder="Repetir contraseña">
                                 </div>
                             </div>
                             <div class="form-group">

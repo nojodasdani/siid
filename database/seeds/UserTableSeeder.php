@@ -20,7 +20,6 @@ class UserTableSeeder extends Seeder
         $admin->email = 'administrador@123.com';
         $admin->password = bcrypt('secret');
         $admin->visto = 1;
-        //$admin->id_numero = 10;
         $admin->save();
         $admin->roles()->attach($administrador);
         $col = new User();
@@ -28,7 +27,6 @@ class UserTableSeeder extends Seeder
         $col->email = 'colono@123.com';
         $col->password = bcrypt('secret');
         $col->visto = 1;
-        //$col->id_numero = 154;
         $col->save();
         $col->roles()->attach($colono);
     }

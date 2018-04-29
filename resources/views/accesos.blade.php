@@ -66,14 +66,6 @@
                 </div>
             </div>
         </div>
-        <div class="text-center">
-            <button class='btn btn-primary' data-toggle='modal' data-target='#modalUnico'>
-                Invitado
-            </button>
-            <button class='btn btn-warning' data-toggle='modal' data-target='#modalEvento'>
-                Evento
-            </button>
-        </div>
         <!-- Modal -->
         <div class="modal fade" id="modalUnico" role="dialog">
             <div class="modal-dialog">
