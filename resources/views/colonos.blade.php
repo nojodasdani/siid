@@ -3,7 +3,7 @@
 @section('content')
     <?php
     use App\User;
-    $usuarios = User::all()->where('activo', 1)->where('id', '!=', Auth::user()->id);
+    $usuarios = User::all()->where('activo', 1)->where('aceptado', 1)->where('visto', 1)->where('id', '!=', Auth::user()->id);
     ?>
     <div class="container">
         @if (Session::has('message'))
