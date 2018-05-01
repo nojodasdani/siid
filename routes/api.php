@@ -2,25 +2,22 @@
 
 use Illuminate\Http\Request;
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| is assigned the "api" middleware group. Enjoy building your API!
-|
-*/
+//Llenar información inicial del sistema
 Route::get("/cargarCalles", "ApiController@cargarCalles");
 Route::get("/cargarNumeros/{calle}", "ApiController@cargarNumeros");
 Route::get("/cargarMarcas", "ApiController@cargarMarcas");
 Route::get("/cargarModelos/{marca}", "ApiController@cargarModelos");
 Route::get("/cargarColores", "ApiController@cargarColores");
 Route::get("/cargarTiposVisitante", "ApiController@cargarTiposVisitante");
-Route::get("/cargarColonos/{domicilio}", "ApiController@cargarColonos");
 
+//cargar info según manipula la interfaz
+Route::get("/cargarColonos/{domicilio}", "ApiController@cargarColonosPorCasa");
+Route::get("/cargarColono/{id_colono}", "ApiController@cargarColono");
+Route::get("/cargarAuto/{placa}", "ApiController@cargarAuto");
+Route::get("/cargarVisitantesPorAuto/{id_auto}", "ApiController@cargarVisitantesPorAuto");
+Route::get("/cargarVisitante/{id_visitante}", "ApiController@cargarVisitante");
 
-Route::post("/guardarCoche", "ApiController@guardarCoche");
+//lectura de códigos
+Route::get("/leerCodigo", "ApiController@leerCodigo");
 
-Route::get("/cargarCoche/{placa}", "ApiController@cargarCoche");
+//realizar registros desde la interfaz
