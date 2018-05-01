@@ -13,7 +13,7 @@ class ApiController extends Controller
 {
     public function cargarCalles()
     {
-        $calles = Calle::all();
+        $calles = Calle::all()->first();
         return json_encode($calles);
     }
 
