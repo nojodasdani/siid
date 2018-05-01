@@ -13,8 +13,9 @@ class ApiController extends Controller
 {
     public function cargarCalles()
     {
-        $calles = Calle::all()->first();
-        return json_encode($calles);
+        $calles = Calle::all();
+        $retorno = '{"calles":' . json_encode($calles) . '}';
+        return $retorno;
     }
 
     public function cargarNumeros($calle)
@@ -49,8 +50,14 @@ class ApiController extends Controller
 
     public function cargarColonos($domicilio)
     {
-        $colonos = Numero::find($domicilio)->colonos;
-        return json_encode($colonos);
+        $numero = Numero::find($domicilio);
+        $colonos = $numero->colonos;
+        $activos = array();
+        foreach ($colonos as $colono) {
+            if ($colono->activo && $colono->acepta_visitas)
+                $activos[] = $colono;
+        }
+        return json_encode($activos);
     }
 
     public function cargarCoche($placa)
