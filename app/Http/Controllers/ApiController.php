@@ -65,7 +65,7 @@ class ApiController extends Controller
         $colonos = $numero->colonos;
         $activos = array();
         foreach ($colonos as $colono) {
-            if ($colono->activo)
+            if ($colono->activo && $colono->acceso_sistema)
                 $activos[] = $colono;
         }
         $retorno = '{"contenido":' . json_encode($activos) . '}';
