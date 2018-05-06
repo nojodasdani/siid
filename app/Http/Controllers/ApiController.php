@@ -6,6 +6,7 @@ use App\Acceso;
 use App\Auto;
 use App\Codigo;
 use App\Color_Auto;
+use App\Modelo_Auto;
 use App\User;
 use App\Visitante;
 use Illuminate\Auth\Access\Response;
@@ -14,6 +15,7 @@ use App\Marca_Auto;
 use App\Tipo_Visitante;
 use App\Calle;
 use App\Numero;
+use Prophecy\Call\Call;
 
 class ApiController extends Controller
 {
@@ -81,19 +83,18 @@ class ApiController extends Controller
 
     public function cargarAuto($placa)
     {
-        $auto = Auto::where('placa', $placa)->get();
-        $retorno = '{"contenido":' . json_encode($auto) . '}';
-        return $retorno;
-    }
+        $auto = Auto::where('placa', $placa)->first();
+        if (count($auto) == 0) {
+            $retorno = '{"contenido":[]}';
+        } else {
+            $auto->visitantes;
+            $auto->nombre_color = $auto->color->color;
+            $auto->nombre_marca = $auto->modelo->marca->marca;
+            $auto->nombre_modelo = $auto->modelo->modelo;
+            $retorno = '{"contenido":[' . json_encode($auto) . ']}';
+        }
 
-    public function registrarAuto(Request $request)
-    {
-        $auto = new Auto();
-        $auto->placa = $request->input('placa');
-        $auto->id_modelo = $request->input('modelo');
-        $auto->color = $request->input('color');
-        $auto->save();
-        return $auto->id;
+        return $retorno;
     }
 
     public function cargarVisitantesPorAuto($auto)
@@ -101,17 +102,6 @@ class ApiController extends Controller
         $visitantes = Visitante::where('id_auto', $auto)->get();
         $retorno = '{"contenido":' . json_encode($visitantes) . '}';
         return $retorno;
-    }
-
-    public function registrarVisitante(Request $request)
-    {
-        $visitante = new Visitante();
-        $visitante->id_auto = $request->input('auto');
-        $visitante->id_tipo_visitante = $request->input('tipo_visitante');
-        $visitante->nombre = $request->input('nombre');
-        $visitante->descripcion = ($request->input('descripcion') == NULL) ? NULL : $request->input('descripcion');
-        $visitante->save();
-        return $visitante->id;
     }
 
     public function cargarVisitante($id)
@@ -136,19 +126,113 @@ class ApiController extends Controller
         }
     }
 
-    public function registrarAcceso(Request $request)
+    public function registrarAutoVisitanteAcceso(Request $request)
     {
-        $acceso = new Acceso();
-        $visitante = Visitante::find($request->input('visitante'));
-        $visitante->ultima_visita = $request->input('domicilio');
+        $auto = new Auto();
+        $auto->placa = $request->input('placa');
+        $auto->id_modelo = $request->input('modelo');
+        $auto->color = $request->input('color');
+        $auto->save();
+        $visitante = new Visitante();
+        $visitante->id_auto = $auto->id;
+        $visitante->id_tipo_visitante = $request->input('tipo_visitante');
+        $visitante->nombre = $request->input('nombre');
+        $visitante->descripcion = ($request->input('descripcion') == NULL) ? NULL : $request->input('descripcion');
         $visitante->save();
-        $colono = User::find($request->input('colono'));
+        //return $auto->id;
+    }
+
+    public function registrarVisitanteAcceso(Request $request)
+    {
+        //recibir variables
+        $placa = $request->input('placa');
+        $marca = $request->input('marca');
+        $modelo = $request->input('modelo');
+        $color = $request->input('color');
+        $calle = $request->input('calle');
+        $numero = $request->input('numero');
+        $domicilio = "$calle #$numero";
+        $nombre_visitante = $request->input('nombre');
+        $tipo = $request->input('tipo');
+        $nombre_colono = $request->input('contacto');
+        //buscar y modificar auto
+        $auto = Auto::where('placa', $placa)->first();
+        $color_auto = Color_Auto::where("color", $color)->first();
+        $marca_auto = Marca_Auto::where("marca", $marca)->first();
+        $modelo_auto = Modelo_Auto::all()->where('id_marca', $marca_auto->id)->where("modelo", $modelo)->first();
+        $auto->id_modelo = $modelo_auto->id;
+        $auto->id_color = $color_auto->id;
+        $auto->save();
+        //registrar visitante
+        $visitante = new Visitante();
+        $visitante->id_auto = $auto->id;
+        $visitante->id_tipo_visitante = Tipo_Visitante::where('tipo', $tipo)->first()->id;
+        $visitante->ultima_visita = $domicilio;
+        $visitante->nombre = $nombre_visitante;
+        $visitante->save();
+        //buscar colono
+        $calle = Calle::where("calle", $calle)->first();
+        $numero = Numero::all()->where("id_calle", $calle->id)->where("numero", $numero)->first();
+        $colono = User::all()->where('id_numero', $numero->id)->where('name', $nombre_colono)->first();
+        $acceso = new Acceso();
+        if ($colono != NULL) {
+            $acceso->id_colono = $colono->id;
+            $acceso->nombre_colono = $colono->name;
+        } else {
+            $acceso->id_colono = NULL;
+            $acceso->nombre_colono = $nombre_colono;
+        }
         $acceso->id_visitante = $visitante->id;
-        $acceso->id_colono = $colono->id;
+        $acceso->domicilio = $domicilio;
+        $acceso->auto = "$marca - $modelo - $color";
         $acceso->id_tipo_acceso = 1;
         $acceso->id_status = 1;
-        $acceso->nombre_colono = $colono->name;
-        $acceso->domicilio = "";
+        $acceso->save();
+    }
+
+    public function registrarAcceso(Request $request)
+    {
+        //recibir variables
+        $placa = $request->input('placa');
+        $marca = $request->input('marca');
+        $modelo = $request->input('modelo');
+        $color = $request->input('color');
+        $calle = $request->input('calle');
+        $numero = $request->input('numero');
+        $domicilio = "$calle #$numero";
+        $visitante = $request->input('nombre');
+        $tipo = $request->input('tipo');
+        $nombre_colono = $request->input('contacto');
+        //buscar y modificar auto
+        $auto = Auto::where('placa', $placa)->first();
+        $color_auto = Color_Auto::where("color", $color)->first();
+        $marca_auto = Marca_Auto::where("marca", $marca)->first();
+        $modelo_auto = Modelo_Auto::all()->where('id_marca', $marca_auto->id)->where("modelo", $modelo)->first();
+        $auto->id_modelo = $modelo_auto->id;
+        $auto->id_color = $color_auto->id;
+        $auto->save();
+        //buscar y modificar visitante
+        $visitante = Visitante::all()->where('id_auto', $auto->id)->where('nombre', $visitante)->first();
+        $visitante->id_tipo_visitante = Tipo_Visitante::where('tipo', $tipo)->first()->id;
+        $visitante->ultima_visita = $domicilio;
+        $visitante->save();
+        //buscar colono
+        $calle = Calle::where("calle", $calle)->first();
+        $numero = Numero::all()->where("id_calle", $calle->id)->where("numero", $numero)->first();
+        $colono = User::all()->where('id_numero', $numero->id)->where('name', $nombre_colono)->first();
+        $acceso = new Acceso();
+        if ($colono != NULL) {
+            $acceso->id_colono = $colono->id;
+            $acceso->nombre_colono = $colono->name;
+        } else {
+            $acceso->id_colono = NULL;
+            $acceso->nombre_colono = $nombre_colono;
+        }
+        $acceso->id_visitante = $visitante->id;
+        $acceso->domicilio = $domicilio;
+        $acceso->auto = "$marca - $modelo - $color";
+        $acceso->id_tipo_acceso = 1;
+        $acceso->id_status = 1;
         $acceso->save();
     }
 

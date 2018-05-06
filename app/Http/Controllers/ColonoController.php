@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Visitante;
 use Dompdf\Exception;
 use Illuminate\Http\Request;
 use App\User;
@@ -55,5 +56,12 @@ class ColonoController extends Controller
         $usuario = User::find($request->input('id_colono'));
         $usuario->acceso_fraccionamiento = $request->input('valor');
         $usuario->save();
+    }
+
+    public function accesoVisitante(Request $request)
+    {
+        $visitante = Visitante::find($request->input('id_visitante'));
+        $visitante->permitido = $request->input('valor');
+        $visitante->save();
     }
 }

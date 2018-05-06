@@ -14,48 +14,27 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="panel panel-default">
-                    <div class="panel-heading">Tus códigos activos</div>
+                    <div class="panel-heading">Accesos al fraccionamiento</div>
                     <div class="panel-body">
                         <div class="table-responsive">
                             <?php
-                            use App\Codigo;
-                            use App\Tipo_Codigo;
-                            use Illuminate\Support\Facades\Auth;
-                            $codigos = Codigo::where('id_usuario', '=', Auth::user()->id)
-                                ->where('vigente', '=', 1)
-                                ->get();
-                            $html = "<table class='codes table table-bordered table-condensed table-striped table-hover' id='tabla' style='border-collapse:collapse;'>
+                            use App\Acceso;
+                            $accesos = Acceso::orderBy('created_at', 'desc')->get();
+                            $html = "<table class='codes table table-bordered table-condensed table-striped table-hover' id='tabla'>
                                     <thead>
                                         <tr>
                                             <td>Fecha de creación</td>
                                             <td>Nombre del visitante</td>
                                             <td>Usos restantes</td>
                                             <td>Tipo</td>
-                                            <td></td>
                                         </tr>
                                     </thead><tbody>";
-                            foreach ($codigos as $codigo) {
-                                $tipo = Tipo_Codigo::find($codigo->id_tipo_codigo)->nombre;
-                                $html .= "<tr id='$codigo->id'>
-                                            <td>$codigo->created_at</td>
-                                            <td>$codigo->nombre_visitante</td>
-                                            <td>$codigo->usos_restantes</td>
-                                            <td>$tipo</td>
-                                            <td align='center'>
-                                                <button class='accordion-toggle btn btn-info ver' data-toggle='collapse' data-target='#image$codigo->id'>
-                                                    <span class='glyphicon glyphicon-eye-open'></span>
-                                                </button>
-                                                <button class='btn btn-danger eliminar'>
-                                                    <span class='glyphicon glyphicon-trash'></span>
-                                                </button>
-                                            </td>
-                                          </tr>
-                                          <tr>
-                                            <td colspan='5' class='hiddenRow'>
-                                                <div class='accordian-body collapse' id='image$codigo->id'>
-                                                    <img class='img-responsive imagenCodigo' src='../$codigo->imagen'>
-                                                </div>
-                                            </td>
+                            foreach ($accesos as $acceso) {
+                                $html .= "<tr id='$acceso->id'>
+                                            <td>$acceso->created_at</td>
+                                            <td>$acceso->nombre_visitante</td>
+                                            <td>$acceso->usos_restantes</td>
+                                            <td></td>
                                           </tr>";
                             }
                             $html .= "</tbody></table>";

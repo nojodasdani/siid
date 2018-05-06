@@ -24,6 +24,8 @@ Route::get('/colonos/eliminarColono', 'ColonoController@eliminarColono')->middle
 Route::get('/colonos/accesoSistema', 'ColonoController@accesoSistema')->middleware($admin);
 Route::get('/colonos/accesoFracc', 'ColonoController@accesoFracc')->middleware($admin);
 
+Route::get('/visitantes/accesoVisitante', 'ColonoController@accesoVisitante')->middleware($admin);
+
 Route::get('/visitantes/show', function () {
     return view('visitantes');
 })->middleware($admin);

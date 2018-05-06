@@ -19,4 +19,9 @@ class Auto extends Model
     {
         return $this->belongsTo(Color_Auto::class, 'id_color');
     }
+
+    public function visitantes()
+    {
+        return $this->hasMany(Visitante::class, 'id_auto');
+    }
 }

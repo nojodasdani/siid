@@ -11,7 +11,7 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="panel panel-default">
-                    <div class="panel-heading">Avisos para colonos</div>
+                    <div class="panel-heading">Visitantes registrados</div>
                     <div class="panel-body">
                         <div class="table-responsive">
                             <?php
@@ -20,29 +20,35 @@
                             $html = "<table class='table table-bordered table-striped table-hover' id='tabla'>
                                     <thead>
                                         <tr>
-                                            <td>Contenido</td>
-                                            <td>Visible</td>
-                                            <td></td>
+                                            <td>Placa</td>
+                                            <td>Auto</td>
+                                            <td>Nombre</td>
+                                            <td>Última visita</td>
+                                            <td>Comentarios</td>
+                                            <td>Tipo</td>
+                                            <td>Acceso</td>
                                         </tr>
                                     </thead><tbody>";
                             foreach ($visitantes as $visitante) {
-                                $creado = $aviso->usuario->nombre;
+                                $placa = $visitante->auto->placa;
+                                $marca = $visitante->auto->modelo->marca->marca;
+                                $modelo = $visitante->auto->modelo->modelo;
+                                $color = $visitante->auto->color->color;
+                                $tipo = $visitante->tipo->tipo;
+                                $auto = "$marca - $modelo - $color";
                                 $checked = "";
-                                if ($aviso->visible) {
+                                if ($visitante->permitido) {
                                     $checked = " checked";
                                 }
-                                $html .= "<tr id='$aviso->id'>
-                            <td>$aviso->texto</td>
-                            <td align='center'><input class='form-control cambiar' type='checkbox'$checked></td>
-                            <td align='center'>
-                                <button class='btn btn-info editar'>
-                                    <span class='glyphicon glyphicon-edit'></span>
-                                </button>
-                                <button class='btn btn-danger eliminar'>
-                                    <span class='glyphicon glyphicon-trash'></span>
-                                </button>
-                            </td>
-                          </tr>";
+                                $html .= "<tr id='$visitante->id'>
+                                            <td>$placa</td>
+                                            <td>$auto</td>
+                                            <td>$visitante->nombre</td>
+                                            <td>$visitante->ultima_visita</td>
+                                            <td>$visitante->descripcion</td>
+                                            <td>$tipo</td>
+                                            <td align='center'><input class='form-control cambiar' type='checkbox'$checked></td>
+                                          </tr>";
                             }
                             $html .= "</tbody></table>";
                             echo $html;
