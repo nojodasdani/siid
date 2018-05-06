@@ -128,18 +128,51 @@ class ApiController extends Controller
 
     public function registrarAutoVisitanteAcceso(Request $request)
     {
+        //recibir variables
+        $placa = $request->input('placa');
+        $marca = $request->input('marca');
+        $modelo = $request->input('modelo');
+        $color = $request->input('color');
+        $calle = $request->input('calle');
+        $numero = $request->input('numero');
+        $domicilio = "$calle #$numero";
+        $nombre_visitante = $request->input('nombre');
+        $tipo = $request->input('tipo');
+        $nombre_colono = $request->input('contacto');
+        //buscar y modificar auto
         $auto = new Auto();
-        $auto->placa = $request->input('placa');
-        $auto->id_modelo = $request->input('modelo');
-        $auto->color = $request->input('color');
+        $color_auto = Color_Auto::where("color", $color)->first();
+        $marca_auto = Marca_Auto::where("marca", $marca)->first();
+        $modelo_auto = Modelo_Auto::all()->where('id_marca', $marca_auto->id)->where("modelo", $modelo)->first();
+        $auto->placa = $placa;
+        $auto->id_modelo = $modelo_auto->id;
+        $auto->id_color = $color_auto->id;
         $auto->save();
+        //registrar visitante
         $visitante = new Visitante();
         $visitante->id_auto = $auto->id;
-        $visitante->id_tipo_visitante = $request->input('tipo_visitante');
-        $visitante->nombre = $request->input('nombre');
-        $visitante->descripcion = ($request->input('descripcion') == NULL) ? NULL : $request->input('descripcion');
+        $visitante->id_tipo_visitante = Tipo_Visitante::where('tipo', $tipo)->first()->id;
+        $visitante->ultima_visita = $domicilio;
+        $visitante->nombre = $nombre_visitante;
         $visitante->save();
-        //return $auto->id;
+        //buscar colono
+        $calle = Calle::where("calle", $calle)->first();
+        $numero = Numero::all()->where("id_calle", $calle->id)->where("numero", $numero)->first();
+        $colono = User::all()->where('id_numero', $numero->id)->where('name', $nombre_colono)->first();
+        $acceso = new Acceso();
+        if ($colono != NULL) {
+            $acceso->id_colono = $colono->id;
+            $acceso->nombre_colono = $colono->name;
+        } else {
+            $acceso->id_colono = NULL;
+            $acceso->nombre_colono = $nombre_colono;
+        }
+        $acceso->id_visitante = $visitante->id;
+        $acceso->domicilio = $domicilio;
+        $acceso->auto = "$marca - $modelo - $color";
+        $acceso->id_tipo_acceso = 1;
+        $acceso->id_status = 1;
+        $acceso->save();
     }
 
     public function registrarVisitanteAcceso(Request $request)
