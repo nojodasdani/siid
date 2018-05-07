@@ -7,7 +7,7 @@ $(document).ready(function () {
         ]
     });
 
-    $(".cambiar").click(function () {
+    $(document).on('change', ".cambiar", function () {
         var renglon = $(this).parent().parent();
         var id = renglon.attr('id');
         var valor = ($(this).prop('checked')) ? 1 : 0;
@@ -21,7 +21,7 @@ $(document).ready(function () {
         });
     });
 
-    $(".eliminar").click(function () {
+    $(document).on('click', ".eliminar", function () {
         var renglon = $(this).parent().parent();
         var id = renglon.attr('id');
         $.ajax({
@@ -36,7 +36,7 @@ $(document).ready(function () {
         });
     });
 
-    $(".nombre").on('change keyup paste', function () {
+    $(document).on('change keyup paste', ".nombre", function () {
         var valor = $(this).val();
         var renglon = $(this).parent().parent();
         var id = renglon.attr('id');

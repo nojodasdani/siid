@@ -14,7 +14,7 @@ class AddAutoFieldAccesosTable extends Migration
     public function up()
     {
         Schema::table('accesos', function ($table) {
-            $table->string('auto');
+            $table->string('auto')->nullable();
         });
     }
 

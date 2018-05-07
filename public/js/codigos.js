@@ -9,14 +9,14 @@ $(document).ready(function () {
         ]
     });*/
 
-    $('.accordian-body').on('show.bs.collapse', function () {
+    $(document).on('show.bs.collapse', '.accordian-body', function () {
         $(this).closest("table")
             .find(".collapse.in")
             .not(this)
             .collapse('toggle')
     })
 
-    $(".eliminar").click(function () {
+    $(document).on('click', ".eliminar", function () {
         var id = $(this).parent().parent().attr('id');
         iziToast.question({
             timeout: 20000,

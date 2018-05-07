@@ -9,7 +9,7 @@ $(document).ready(function () {
         ]
     });
 
-    $(".aceptar").click(function () {
+    $(document).on('click', ".aceptar", function () {
         var renglon = $(this).parent().parent();
         var id = renglon.attr('id');
         $.ajax({
@@ -24,7 +24,7 @@ $(document).ready(function () {
         });
     });
 
-    $(".rechazar").click(function () {
+    $(document).on('click', ".rechazar", function () {
         var renglon = $(this).parent().parent();
         var id = renglon.attr('id');
         $.ajax({
