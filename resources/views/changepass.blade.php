@@ -25,7 +25,7 @@
                                 <label for="new-password" class="col-md-4 control-label">Contraseña actual</label>
                                 <div class="col-md-6">
                                     <input id="current-password" type="password" class="form-control"
-                                           name="current-password" required>
+                                           name="current-password" required placeholder="Contraseña actual">
                                     @if ($errors->has('current-password'))
                                         <span class="help-block">
 <strong>{{ $errors->first('current-password') }}</strong>
@@ -37,7 +37,7 @@
                                 <label for="new-password" class="col-md-4 control-label">Nueva contraseña</label>
                                 <div class="col-md-6">
                                     <input id="new-password" type="password" class="form-control" name="new-password"
-                                           required>
+                                           placeholder="Nueva contraseña" required>
                                     @if ($errors->has('new-password'))
                                         <span class="help-block">
 <strong>{{ $errors->first('new-password') }}</strong>
@@ -51,7 +51,7 @@
                                 </label>
                                 <div class="col-md-6">
                                     <input id="new-password-confirm" type="password" class="form-control"
-                                           name="new-password_confirmation" required>
+                                           name="new-password_confirmation" required placeholder="Repetir contraseña">
                                 </div>
                             </div>
                             <div class="form-group">

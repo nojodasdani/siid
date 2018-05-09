@@ -1,6 +1,6 @@
 $(document).ready(function () {
     if (flag) {
-        var url = (location.href.includes('home') || location.href.includes('micuenta')) ? "showNotifications" : "../showNotifications";
+        var url = (location.href.includes('home') || location.href.includes('micuenta') || location.href.includes('changepassword')) ? "showNotifications" : "../showNotifications";
         setInterval(function () {
             $.ajax({
                 url: url,
