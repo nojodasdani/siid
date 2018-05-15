@@ -7,6 +7,7 @@ $(document).ready(function () {
             {"width": "20%"},
             {"width": "20%"},
             {"width": "10%"},
-        ]
+        ],
+        "order": [[ 0, "desc" ]]
     });
 });

@@ -20,6 +20,7 @@
                             $html = "<table class='table table-bordered table-striped table-hover' id='tabla'>
                                     <thead>
                                         <tr>
+                                            <td>Creado</td>
                                             <td>Placa</td>
                                             <td>Auto</td>
                                             <td>Nombre</td>
@@ -41,6 +42,7 @@
                                     $checked = " checked";
                                 }
                                 $html .= "<tr id='$visitante->id'>
+                                            <td>$visitante->created_at</td>
                                             <td>$placa</td>
                                             <td>$auto</td>
                                             <td>$visitante->nombre</td>

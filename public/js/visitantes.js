@@ -1,6 +1,7 @@
 $(document).ready(function () {
     $('#tabla').DataTable({
         "columns": [
+            null,
             {"width": "10%"},
             {"width": "20%"},
             {"width": "20%"},
@@ -8,7 +9,15 @@ $(document).ready(function () {
             {"width": "15%"},
             {"width": "10%"},
             {"width": "10%"},
-        ]
+        ],
+        "aaSorting": [[0, 'desc']],
+        "columnDefs": [
+            {
+                "targets": [0],
+                "visible": false,
+                "searchable": false
+            },
+        ],
     });
 
     $(document).on('change', '.cambiar', function () {
