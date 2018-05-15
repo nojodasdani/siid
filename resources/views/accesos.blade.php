@@ -19,7 +19,7 @@
                         <div class="table-responsive">
                             <?php
                             use App\Acceso;
-                            $accesos = Acceso::orderBy('created_at', 'desc')->get();
+                            $accesos = Acceso::orderBy('created_at', 'asc')->get();
                             $html = "<table class='table table-bordered table-condensed table-striped table-hover' id='tabla'>
                                     <thead>
                                         <tr>
