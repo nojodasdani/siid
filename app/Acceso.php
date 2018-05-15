@@ -8,7 +8,7 @@ class Acceso extends Model
 {
     protected $table = 'accesos';
 
-    protected $fillable = ['id_colono', 'id_visitante', 'id_tipo_acceso', 'id_status', 'id_codigo', 'nombre_colono', 'domicilio', 'auto'];
+    protected $fillable = ['id_colono', 'id_visitante', 'id_tipo_acceso', 'id_status', 'id_codigo', 'nombre_colono', 'nombre_visitante', 'domicilio', 'auto'];
 
     public function colono()
     {

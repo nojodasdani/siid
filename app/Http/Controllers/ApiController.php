@@ -111,21 +111,6 @@ class ApiController extends Controller
         return $retorno;
     }
 
-    public function leerCodigo(Request $request)
-    {
-        $contenido = $request->input('contenido');
-        $codigo = Codigo::where('contenido', $contenido)->first();
-        if ($codigo != NULL) {
-            if (!$codigo->vigente || $codigo->usos_restantes <= 0) {
-                return "Ese código ya no está activo debido a que ya ha excedido sus usos o ha caducado.";
-            } else {
-                return "Código válido";
-            }
-        } else {
-            return "No tenemos registrado ese código QR";
-        }
-    }
-
     public function registrarAutoVisitanteAcceso(Request $request)
     {
         //recibir variables
@@ -269,8 +254,40 @@ class ApiController extends Controller
         $acceso->save();
     }
 
-    public function registrarAccesoQR(Request $request)
+    public function leerCodigo($contenido)
     {
+        $codigo = Codigo::where('contenido', $contenido)->first();
+        if ($codigo != NULL) {
+            if (!$codigo->vigente || $codigo->usos_restantes <= 0) {
+                return "Ese código ya no está activo debido a que ya ha excedido sus usos o ha caducado.";
+            } else {
+                $usos = $codigo->usos_restantes;
+                $usos--;
+                $codigo->usos_restantes = $usos;
+                if ($usos == 0) {
+                    $codigo->vigente = 0;
+                }
+                $codigo->save();
+                $this->registrarAccesoQR($codigo);
+                return "Código válido. Acceso registrado";
+            }
+        } else {
+            return "No tenemos registrado ese código QR";
+        }
+    }
 
+    private function registrarAccesoQR($codigo)
+    {
+        $acceso = new Acceso();
+        $acceso->id_visitante = NULL;
+        $acceso->id_colono = $codigo->id_usuario;
+        $acceso->id_tipo_acceso = 2;
+        $acceso->id_status = 1;
+        $acceso->id_codigo = $codigo->id;
+        $acceso->nombre_colono = $codigo->nombre_colono;
+        $acceso->domicilio = $codigo->domicilio;
+        $acceso->auto = "No aplica";
+        $acceso->nombre_visitante = $codigo->nombre_visitante;
+        $acceso->save();
     }
 }

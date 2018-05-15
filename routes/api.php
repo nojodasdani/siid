@@ -18,7 +18,7 @@ Route::get("/cargarVisitantesPorAuto/{id_auto}", "ApiController@cargarVisitantes
 Route::get("/cargarVisitante/{id_visitante}", "ApiController@cargarVisitante");
 
 //lectura de códigos
-Route::get("/leerCodigo", "ApiController@leerCodigo");
+Route::get("/leerCodigo/{contenido}", "ApiController@leerCodigo");
 
 //realizar registros desde la interfaz
 Route::get("/registrarAcceso", "ApiController@registrarAcceso");

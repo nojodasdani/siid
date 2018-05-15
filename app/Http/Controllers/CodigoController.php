@@ -35,7 +35,8 @@ class CodigoController extends Controller
             'nombre_visitante' => $nombre_visitante,
             'domicilio' => $calle . " " . $numero,
             'contenido' => $contenido,
-            'imagen' => $imagen
+            'imagen' => $imagen,
+            'nombre_colono' => $usuario->name
         ]);
         QrCode::format('png')->size(400)->generate($contenido, "../public/$imagen");
         Session::flash('message', 'El código fue creado exitosamente');
@@ -62,7 +63,8 @@ class CodigoController extends Controller
             'usos_restantes' => $request->input('invitados'),
             'domicilio' => $calle . " " . $numero,
             'contenido' => $contenido,
-            'imagen' => $imagen
+            'imagen' => $imagen,
+            'nombre_colono' => $usuario->name
         ]);
         QrCode::format('png')->size(400)->generate($contenido, "../public/$imagen");
         Session::flash('message', 'El código fue creado exitosamente');
