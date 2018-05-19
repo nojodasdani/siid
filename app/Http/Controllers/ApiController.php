@@ -9,13 +9,11 @@ use App\Color_Auto;
 use App\Modelo_Auto;
 use App\User;
 use App\Visitante;
-use Illuminate\Auth\Access\Response;
 use Illuminate\Http\Request;
 use App\Marca_Auto;
 use App\Tipo_Visitante;
 use App\Calle;
 use App\Numero;
-use Prophecy\Call\Call;
 
 class ApiController extends Controller
 {
@@ -28,7 +26,8 @@ class ApiController extends Controller
 
     public function cargarNumeros($calle)
     {
-        $numeros = Numero::where('id_calle', $calle)->get();
+        $calle = Calle::where('calle', $calle)->first();
+        $numeros = Numero::where('id_calle', $calle->id)->get();
         $retorno = '{"contenido":' . json_encode($numeros) . '}';
         return $retorno;
     }
@@ -42,7 +41,8 @@ class ApiController extends Controller
 
     public function cargarModelos($marca)
     {
-        $modelos = Marca_Auto::find($marca)->modelos;
+        $marca = Marca_Auto::where('marca', $marca)->first();
+        $modelos = Marca_Auto::find($marca->id)->modelos;
         $retorno = '{"contenido":' . json_encode($modelos) . '}';
         return $retorno;
     }
@@ -61,9 +61,10 @@ class ApiController extends Controller
         return $retorno;
     }
 
-    public function cargarColonosPorCasa($domicilio)
+    public function cargarColonosPorCasa(Request $request)
     {
-        $numero = Numero::find($domicilio);
+        $calle = Calle::where('calle', $request->input('calle'))->first();
+        $numero = Numero::all()->where('id_calle', $calle->id)->where('numero', $request->input('numero'))->first();
         $colonos = $numero->colonos;
         $activos = array();
         foreach ($colonos as $colono) {
@@ -74,10 +75,15 @@ class ApiController extends Controller
         return $retorno;
     }
 
-    public function cargarColono($id)
+    public function cargarColono(Request $request)
     {
-        $colono = User::find($id);
-        $retorno = '{"contenido":' . json_encode($colono) . '}';
+        $calle = Calle::where('calle', $request->input('calle'))->first();
+        $numero = Numero::all()->where('id_calle', $calle->id)->where('numero', $request->input('numero'))->first();
+        $colono = User::all()->where('id_numero', $numero->id)->where('name', $request->input('colono'))->first();
+        $retorno = "";
+        if (!$colono->acepta_visitas) {
+            $retorno = "Este colono por el momento no acepta visitas";
+        }
         return $retorno;
     }
 
@@ -97,17 +103,14 @@ class ApiController extends Controller
         return $retorno;
     }
 
-    public function cargarVisitantesPorAuto($auto)
+    public function cargarVisitante(Request $request)
     {
-        $visitantes = Visitante::where('id_auto', $auto)->get();
-        $retorno = '{"contenido":' . json_encode($visitantes) . '}';
-        return $retorno;
-    }
-
-    public function cargarVisitante($id)
-    {
-        $visitante = Visitante::find($id);
-        $retorno = '{"contenido":' . json_encode($visitante) . '}';
+        $auto = Auto::where('placa', $request->placa)->first();
+        $visitante = Visitante::all()->where('id_auto', $auto->id)->where('nombre', $request->visitante)->first();
+        $retorno = "";
+        if (!$visitante->permitido) {
+            $retorno = "El visitante no tiene permiso para acceder al fraccionamiento";
+        }
         return $retorno;
     }
 
@@ -120,6 +123,7 @@ class ApiController extends Controller
         $color = $request->input('color');
         $calle = $request->input('calle');
         $numero = $request->input('numero');
+        $comentario = $request->input('comentario');
         $domicilio = "$calle #$numero";
         $nombre_visitante = $request->input('nombre');
         $tipo = $request->input('tipo');
@@ -139,6 +143,7 @@ class ApiController extends Controller
         $visitante->id_tipo_visitante = Tipo_Visitante::where('tipo', $tipo)->first()->id;
         $visitante->ultima_visita = $domicilio;
         $visitante->nombre = $nombre_visitante;
+        $visitante->descripcion = $comentario;
         $visitante->save();
         //buscar colono
         $calle = Calle::where("calle", $calle)->first();
@@ -156,6 +161,7 @@ class ApiController extends Controller
         $acceso->domicilio = $domicilio;
         $acceso->auto = "$marca - $modelo - $color";
         $acceso->id_tipo_acceso = 1;
+        $acceso->nombre_visitante = $nombre_visitante;
         $acceso->id_status = 1;
         $acceso->save();
     }
@@ -170,6 +176,7 @@ class ApiController extends Controller
         $calle = $request->input('calle');
         $numero = $request->input('numero');
         $domicilio = "$calle #$numero";
+        $comentario = $request->input('comentario');
         $nombre_visitante = $request->input('nombre');
         $tipo = $request->input('tipo');
         $nombre_colono = $request->input('contacto');
@@ -187,6 +194,7 @@ class ApiController extends Controller
         $visitante->id_tipo_visitante = Tipo_Visitante::where('tipo', $tipo)->first()->id;
         $visitante->ultima_visita = $domicilio;
         $visitante->nombre = $nombre_visitante;
+        $visitante->descripcion = $comentario;
         $visitante->save();
         //buscar colono
         $calle = Calle::where("calle", $calle)->first();
@@ -204,6 +212,7 @@ class ApiController extends Controller
         $acceso->domicilio = $domicilio;
         $acceso->auto = "$marca - $modelo - $color";
         $acceso->id_tipo_acceso = 1;
+        $acceso->nombre_visitante = $nombre_visitante;
         $acceso->id_status = 1;
         $acceso->save();
     }
@@ -218,6 +227,7 @@ class ApiController extends Controller
         $calle = $request->input('calle');
         $numero = $request->input('numero');
         $domicilio = "$calle #$numero";
+        $comentario = $request->input('comentario');
         $visitante = $request->input('nombre');
         $tipo = $request->input('tipo');
         $nombre_colono = $request->input('contacto');
@@ -233,6 +243,7 @@ class ApiController extends Controller
         $visitante = Visitante::all()->where('id_auto', $auto->id)->where('nombre', $visitante)->first();
         $visitante->id_tipo_visitante = Tipo_Visitante::where('tipo', $tipo)->first()->id;
         $visitante->ultima_visita = $domicilio;
+        $visitante->descripcion = $comentario;
         $visitante->save();
         //buscar colono
         $calle = Calle::where("calle", $calle)->first();
@@ -250,6 +261,7 @@ class ApiController extends Controller
         $acceso->domicilio = $domicilio;
         $acceso->auto = "$marca - $modelo - $color";
         $acceso->id_tipo_acceso = 1;
+        $acceso->nombre_visitante = $visitante->nombre;
         $acceso->id_status = 1;
         $acceso->save();
     }

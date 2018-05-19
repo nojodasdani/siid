@@ -1,7 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
-
 //Llenar información inicial del sistema
 Route::get("/cargarCalles", "ApiController@cargarCalles");
 Route::get("/cargarNumeros/{calle}", "ApiController@cargarNumeros");
@@ -11,11 +9,10 @@ Route::get("/cargarColores", "ApiController@cargarColores");
 Route::get("/cargarTiposVisitante", "ApiController@cargarTiposVisitante");
 
 //cargar info según manipula la interfaz
-Route::get("/cargarColonos/{domicilio}", "ApiController@cargarColonosPorCasa");
-Route::get("/cargarColono/{id_colono}", "ApiController@cargarColono");
+Route::get("/cargarColonos", "ApiController@cargarColonosPorCasa");
+Route::get("/cargarColono", "ApiController@cargarColono");
 Route::get("/cargarAuto/{placa}", "ApiController@cargarAuto");
-Route::get("/cargarVisitantesPorAuto/{id_auto}", "ApiController@cargarVisitantesPorAuto");
-Route::get("/cargarVisitante/{id_visitante}", "ApiController@cargarVisitante");
+Route::get("/cargarVisitante", "ApiController@cargarVisitante");
 
 //lectura de códigos
 Route::get("/leerCodigo/{contenido}", "ApiController@leerCodigo");
