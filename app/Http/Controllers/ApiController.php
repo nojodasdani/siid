@@ -107,7 +107,7 @@ class ApiController extends Controller
     {
         $auto = Auto::where('placa', $request->placa)->first();
         $visitante = Visitante::all()->where('id_auto', $auto->id)->where('nombre', $request->visitante)->first();
-        $tipo = $visitante->tipo->nombre;
+        $tipo = $visitante->tipo->tipo;
         $retorno = "type=$tipo";
         if (!$visitante->permitido) {
             $retorno = "El visitante no tiene permiso para acceder al fraccionamiento";
