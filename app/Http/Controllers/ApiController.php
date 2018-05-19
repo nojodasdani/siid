@@ -164,6 +164,7 @@ class ApiController extends Controller
         $acceso->nombre_visitante = $nombre_visitante;
         $acceso->id_status = 1;
         $acceso->save();
+        return "ok";
     }
 
     public function registrarVisitanteAcceso(Request $request)
@@ -215,6 +216,7 @@ class ApiController extends Controller
         $acceso->nombre_visitante = $nombre_visitante;
         $acceso->id_status = 1;
         $acceso->save();
+        return "ok";
     }
 
     public function registrarAcceso(Request $request)
@@ -264,6 +266,7 @@ class ApiController extends Controller
         $acceso->nombre_visitante = $visitante->nombre;
         $acceso->id_status = 1;
         $acceso->save();
+        return "ok";
     }
 
     public function leerCodigo($contenido)

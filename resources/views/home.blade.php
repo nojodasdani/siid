@@ -7,23 +7,45 @@
     <div class="container">
         @if (Auth::user()->hasRole("Administrador"))
             <div class="row">
-                <div class="col-xs-12 col-sm-6 col-md-4">
+                <div class="col-xs-12 col-sm-6 col-md-6">
                     <div class="card">
-                        <img src="img/usuarios.png" alt="Avatar" class="img-responsive">
+                        <img src="img/visitante.png" alt="Avatar" class="img-responsive" style="margin: 0 auto;">
                         <div class="contenedor">
-                            <h4><b>John Doe</b></h4>
-                            <p>Architect & Engineer</p>
+                            <h4><b>Visitantes</b></h4>
+                            <p>Hoy</p>
+                            <p>Total</p>
                         </div>
                     </div>
                 </div>
-                <div class="col-xs-12 col-sm-6 col-md-4">
-                    Gráfica 2
+                <div class="col-xs-12 col-sm-6 col-md-6">
+                    <div class="card">
+                        <img src="img/usuarios.png" alt="Avatar" class="img-responsive" style="margin: 0 auto;">
+                        <div class="contenedor text-left">
+                            <h4><b>Colonos</b></h4>
+                            <p>Hoy</p>
+                            <p>Total</p>
+                        </div>
+                    </div>
                 </div>
-                <div class="col-xs-12 col-sm-6 col-md-4">
-                    Gráfica 3
+                <div class="col-xs-12 col-sm-6 col-md-6">
+                    <div class="card">
+                        <img src="img/accesos.png" alt="Avatar" class="img-responsive" style="margin: 0 auto;">
+                        <div class="contenedor">
+                            <h4><b>Accesos</b></h4>
+                            <p>Hoy</p>
+                            <p>Total</p>
+                        </div>
+                    </div>
                 </div>
-                <div class="col-xs-12 col-sm-6 col-md-4">
-                    Gráfica 4
+                <div class="col-xs-12 col-sm-6 col-md-6">
+                    <div class="card">
+                        <img src="img/qr.png" alt="Avatar" class="img-responsive" style="margin: 0 auto;">
+                        <div class="contenedor">
+                            <h4><b>Accesos con QR</b></h4>
+                            <p>Hoy</p>
+                            <p>Total</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         @else
