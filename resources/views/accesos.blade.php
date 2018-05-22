@@ -13,7 +13,7 @@
         @endif
         <div class="row">
             <div class="col-md-12">
-                <form method="post" class="form-inline" target="_blank" action="{{route('reporteAccesos')}}">
+                <form method="post" class="form-inline" action="{{route('reporteAccesos')}}">
                     {{ csrf_field() }}
                     <div class="form-group">
                         <label for="fechaI" class="col-md-4 control-label">Desde:</label>

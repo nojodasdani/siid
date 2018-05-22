@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Hash;
+use PDF;
 
 class HomeController extends Controller
 {
@@ -50,23 +51,23 @@ class HomeController extends Controller
         $user->save();
         Session::flash('message', 'Tu contraseña fue modificada exitosamente');
         return redirect('/changepassword');
-        //return redirect()->back()->with("success", "Password changed successfully !");
     }
 
     public function generarReporte(Request $request)
     {
         $fechaI = $request->input('fechaI');
         $fechaF = $request->input('fechaF');
-        $raw = "DATE_FORMAT(created_at,'%d-%m-%Y') = '" . $fechaI . "' ORDER BY id";
+        $fechaInicial = explode('-', $fechaI);
+        $fechaInicial = "$fechaInicial[2]-$fechaInicial[1]-$fechaInicial[0]";
+        $raw = "CAST(created_at as date) = '" . $fechaInicial . "' ORDER BY id";
         if ($fechaF != NULL) {
-            $raw = "created_at BETWEEN STR_TO_DATE('" . $fechaI . "','%d-%m-%Y') AND
-                                STR_TO_DATE('" . $fechaF . "','%d-%m-%Y')";
+            $fechaFinal = explode('-', $fechaF);
+            $fechaFinal = "$fechaFinal[2]-$fechaFinal[1]-$fechaFinal[0]";
+            $raw = "CAST(created_at as date) BETWEEN '$fechaInicial' AND '$fechaFinal'";
         }
-        //echo $fechaI;
-        //echo $fechaF;
-        //echo $raw;
         $accesos = Acceso::whereRaw($raw)->get();
-        var_dump($accesos);
+        $pdf = PDF::loadView('reporte', compact('accesos'));
+        return $pdf->download('reporte.pdf');
     }
 
 }
