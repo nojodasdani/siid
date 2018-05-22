@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Acceso;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -50,6 +51,22 @@ class HomeController extends Controller
         Session::flash('message', 'Tu contraseña fue modificada exitosamente');
         return redirect('/changepassword');
         //return redirect()->back()->with("success", "Password changed successfully !");
+    }
+
+    public function generarReporte(Request $request)
+    {
+        $fechaI = $request->input('fechaI');
+        $fechaF = $request->input('fechaF');
+        $raw = "DATE_FORMAT(created_at,'%d-%m-%Y') = '" . $fechaI . "' ORDER BY id";
+        if ($fechaF != NULL) {
+            $raw = "created_at BETWEEN STR_TO_DATE('" . $fechaI . "','%d-%m-%Y') AND
+                                STR_TO_DATE('" . $fechaF . "','%d-%m-%Y')";
+        }
+        //echo $fechaI;
+        //echo $fechaF;
+        //echo $raw;
+        $accesos = Acceso::whereRaw($raw)->get();
+        var_dump($accesos);
     }
 
 }

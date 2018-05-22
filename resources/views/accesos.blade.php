@@ -1,5 +1,5 @@
 @extends('layouts.app')
-
+{{ Html::style('jquery-ui-1.12.1/jquery-ui.min.css') }}
 @section('content')
     <div class="container">
         @if (Session::has('message'))
@@ -12,6 +12,31 @@
             <div class="alert alert-warning">{{ Session::get('warning') }}</div>
         @endif
         <div class="row">
+            <div class="col-md-12">
+                <form method="post" class="form-inline" target="_blank" action="{{route('reporteAccesos')}}">
+                    {{ csrf_field() }}
+                    <div class="form-group">
+                        <label for="fechaI" class="col-md-4 control-label">Desde:</label>
+                        <div class="col-md-6">
+                            <input id="fechaI" type="text" class="form-control" name="fechaI" required readonly>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="fechaF" class="col-md-4 control-label">Hasta:</label>
+                        <div class="col-md-6">
+                            <input id="fechaF" type="text" class="form-control" name="fechaF" placeholder="(Opcional)" readonly>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-6 col-md-offset-4">
+                            <button type="submit" class="btn btn-success">
+                                Generar reporte
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <br><br>
             <div class="col-md-12">
                 <div class="panel panel-default">
                     <div class="panel-heading">Accesos al fraccionamiento</div>
@@ -58,5 +83,6 @@
             </div>
         </div>
     </div>
+    {{ Html::script('jquery-ui-1.12.1/jquery-ui.min.js') }}
     {{ Html::script('js/accesos.js') }}
 @endsection

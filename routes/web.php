@@ -13,6 +13,7 @@ Route::get('/', function () {
 Route::get('/accesos/show', function () {
     return view('accesos');
 })->middleware($admin);
+Route::post('/accesos/generarReporte', 'HomeController@generarReporte')->name('reporteAccesos')->middleware($admin);
 
 Route::get('/colonos/show', function () {
     return view('colonos');

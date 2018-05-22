@@ -12,8 +12,8 @@
                         <img src="img/visitante.png" alt="Avatar" class="img-responsive" style="margin: 0 auto;">
                         <div class="contenedor">
                             <h4><b>Visitantes</b></h4>
-                            <p>Hoy</p>
-                            <p>Total</p>
+                            <p>Más concurrente: </p>
+                            <p>Total: </p>
                         </div>
                     </div>
                 </div>
@@ -22,8 +22,8 @@
                         <img src="img/usuarios.png" alt="Avatar" class="img-responsive" style="margin: 0 auto;">
                         <div class="contenedor text-left">
                             <h4><b>Colonos</b></h4>
-                            <p>Hoy</p>
-                            <p>Total</p>
+                            <p>Más visitado: </p>
+                            <p>Total: </p>
                         </div>
                     </div>
                 </div>
@@ -32,8 +32,8 @@
                         <img src="img/accesos.png" alt="Avatar" class="img-responsive" style="margin: 0 auto;">
                         <div class="contenedor">
                             <h4><b>Accesos</b></h4>
-                            <p>Hoy</p>
-                            <p>Total</p>
+                            <p>Hoy: </p>
+                            <p>Total: </p>
                         </div>
                     </div>
                 </div>
@@ -42,8 +42,8 @@
                         <img src="img/qr.png" alt="Avatar" class="img-responsive" style="margin: 0 auto;">
                         <div class="contenedor">
                             <h4><b>Accesos con QR</b></h4>
-                            <p>Hoy</p>
-                            <p>Total</p>
+                            <p>Hoy: </p>
+                            <p>Total: </p>
                         </div>
                     </div>
                 </div>
