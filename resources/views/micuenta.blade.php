@@ -48,15 +48,12 @@
             $htmlcalle = "<div class='form-group'>
                     <label for='calle' class='col-md-2 control-label'>Calle</label>
                     <div class='col-md-4'>
-                        <select id='calle' class='form-control' name='calle' required disabled>
-                            <option value='$id_calle' selected>$calle</option>
-                        </select>
+                        <input type='text' id='calle' class='form-control' name='calle' required readonly value='$calle'>
                     </div>
                     <label for='num' class='col-md-2 control-label'>Número</label>
                     <div class='col-md-3'>
-                        <select id='num' class='form-control' name='num' required disabled>
-                            <option value='$id_num'>$num</option>
-                        </select>
+                        <input type='hidden' name='num' value='$id_num' id='num'>
+                        <input type='text' id='numero' class='form-control' name='numero' required readonly value='$num'>
                     </div>
                   </div>";
             ?>
