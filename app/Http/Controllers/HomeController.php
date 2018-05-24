@@ -26,6 +26,7 @@ class HomeController extends Controller
     {
         $user = User::find(Auth::user()->id);
         $user->name = $request->input('name');
+        $user->email = $request->input('email');
         $user->telefono = $request->input('telefono');
         $user->id_numero = $request->input('num');
         $user->acepta_visitas = ($request->input('visitas') != NULL) ? 1 : 0;

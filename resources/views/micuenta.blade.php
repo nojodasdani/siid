@@ -3,6 +3,7 @@
 @section('content')
     <?php
     $usuario = Auth::user();
+    $correo = "";
     $id_calle = $usuario->numero->calle->id;
     $id_num = $usuario->numero->id;
     $htmlcalle = "<div class='form-group'>
@@ -39,6 +40,9 @@
             <div class="alert alert-success">{{ Session::get('message') }}</div>
         @endif
         @if (!$usuario->hasRole('Administrador'))
+            <?php
+            $correo = " readonly";
+            ?>
             <div class='alert alert-warning'>
                 Para cambiar tu correo o tu domicilio, pónte en contacto con un administrador.
             </div>
@@ -76,7 +80,7 @@
                                 <label for="email" class="col-md-4 control-label">Correo electrónico</label>
                                 <div class="col-md-6">
                                     <input id="email" type="email" class="form-control" name="email"
-                                           value="{{$usuario->email}}" required readonly>
+                                           value="{{$usuario->email}}" required {{$correo}}>
                                 </div>
                             </div>
                             <?php
