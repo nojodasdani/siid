@@ -26,12 +26,17 @@ class HomeController extends Controller
     {
         $user = User::find(Auth::user()->id);
         $user->name = $request->input('name');
-        $user->email = $request->input('email');
+        if (Auth::user()->hasRole('Administrador'))
+            $user->email = $request->input('email');
         $user->telefono = $request->input('telefono');
         $user->id_numero = $request->input('num');
         $user->acepta_visitas = ($request->input('visitas') != NULL) ? 1 : 0;
-        $user->save();
-        Session::flash('message', 'Tu cuenta fue modificada exitosamente');
+        try{
+            $user->save();
+            Session::flash('message', 'Tu cuenta fue modificada exitosamente');
+        }catch (\Exception $e){
+            Session::flash('error', 'El correo ingresado ya está siendo utilizado por alguien más. No se guardaron los cambios.');
+        }
         return redirect('/micuenta');
     }
 
