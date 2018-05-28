@@ -33,7 +33,7 @@ class User extends Authenticatable
     }
 
     public function numero(){
-        return $this->belongsTo('App\Numero', 'id_numero');
+        return $this->belongsTo(Numero::class, 'id_numero');
     }
 
     public function authorizeRoles($roles)

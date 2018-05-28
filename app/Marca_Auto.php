@@ -8,8 +8,10 @@ class Marca_Auto extends Model
 {
     protected $table = 'marca';
 
+    protected $fillable = ['marca', 'imagen'];
+
     public function modelos()
     {
-        return $this->hasMany('App\Modelo_Auto', 'id_marca');
+        return $this->hasMany(Modelo_Auto::class, 'id_marca');
     }
 }

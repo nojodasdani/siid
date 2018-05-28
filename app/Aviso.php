@@ -13,6 +13,6 @@ class Aviso extends Model
     ];
 
     public function usuario(){
-        return $this->belongsTo('App\User','creado_por');
+        return $this->belongsTo(User::class,'creado_por');
     }
 }
